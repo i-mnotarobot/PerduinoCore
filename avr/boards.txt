@@ -1,0 +1,90 @@
+##################################################################################################
+## This file is created by MCUdude for use with MiniCore                                        ##
+## https://github.com/MCUdude/MiniCore                                                          ##
+##                                                                                              ##
+## This is the file where fuse settings, clock frequencies, upload ports, bootloaders and       ##
+## compiler flags are located.                                                                  ##
+##                                                                                              ##
+## Note that ATmega48/88/168/328/P/PB require the CLKPR register to be set in user application  ##
+## if you want to use the 2 or 1 MHz internal oscillator option.                                ##
+##                                                                                              ##
+## The table below shows the available precompiled bootloaders for the corresponding clock      ##
+## frequencies and baud rates. Modify the upload.speed field to change baud rate.               ##
+##                                                                                              ##
+## |             | 1000000 | 500000 | 250000 | 230400 | 115200 | 57600 | 38400 | 19200 | 9600 | ##
+## |-------------|---------|--------|--------|--------|--------|-------|-------|-------|------| ##
+## | 20 MHz      |         |  X     |  X     |        |  X     |       |       |  X    |      | ##
+## | 18.4320 MHz |         |        |        |  X     |  X     |  X    |  X    |  X    |  X   | ##
+## | 16 MHz      |  X      |  X     |  X     |        |  X     |       |  X    |  X    |  X   | ##
+## | 14.7456 MHz |         |        |        |  X     |  X     |  X    |  X    |  X    |  X   | ## 
+## | 12 MHz      |         |  X     |  X     |        |  X     |  X    |       |  X    |  X   | ##
+## | 11.0592 MHz |         |        |        |  X     |  X     |  X    |  X    |  X    |  X   | ## 
+## | 8 MHz       |  X      |  X     |  X     |        |  X     |  X    |  X    |  X    |  X   | ##
+## | 7.3728 MHz  |         |        |        |  X     |  X     |  X    |  X    |  X    |  X   | ## 
+## | 4 MHz       |         |  X     |  X     |        |        |       |       |  X    |  X   | ##
+## | 3.6864 MHz  |         |        |        |  X     |  X     |  X    |  X    |  X    |  X   | ## 
+## | 2 MHz       |         |        |  X     |        |        |       |       |  X    |  X   | ##
+## | 1.8432 MHz  |         |        |        |  X     |  X     |  X    |  X    |  X    |  X   | ## 
+## | 1 MHz       |         |        |        |        |        |       |       |       |  X   | ## 
+##                                                                                              ##
+##################################################################################################
+
+# Menu options
+menu.BOD=BOD
+menu.eeprom=EEPROM
+menu.variant=Variant
+menu.bootloader=Bootloader
+
+
+###################
+#### ATmega8/A ####
+###################
+
+# General
+8.name=Perduino Nano
+8.upload.tool=avrdude
+8.upload.maximum_data_size=1024
+8.bootloader.tool=avrdude
+8.bootloader.unlock_bits=0xff
+8.bootloader.lock_bits=0xcf
+8.bootloader.low_fuses=0b{bootloader.bod_bits}{bootloader.sut_cksel_bits}
+8.bootloader.high_fuses=0b110{bootloader.ckopt_bit}{bootloader.eesave_bit}10{bootloader.bootrst_bit}
+8.build.core=MCUdude_corefiles
+8.build.variant=standard
+8.build.board=AVR_ATmega8
+8.build.mcu=atmega8
+8.build.bootloader_led=B5
+8.upload.speed=115200
+8.bootloader.sut_cksel_bits=111111
+8.bootloader.ckopt_bit=0
+8.build.f_cpu=16000000L
+8.upload.maximum_size=7680
+8.upload.protocol=arduino
+8.upload.port=UART0
+8.build.export_merged_output=true
+8.bootloader.bootrst_bit=0
+8.bootloader.file=optiboot_flash/bootloaders/atmega8/16000000L/optiboot_flash_atmega8_{upload.port}_{upload.speed}_{build.f_cpu}_{build.bootloader_led}.hex
+
+# EEPROM
+8.menu.eeprom.keep=EEPROM retained
+8.menu.eeprom.keep.bootloader.eesave_bit=0
+8.menu.eeprom.erase=EEPROM not retained
+8.menu.eeprom.erase.bootloader.eesave_bit=1
+
+# Brown out detection - This is the first part of the low fuse bit concatenation
+8.menu.BOD.2v7=BOD 2.7V
+8.menu.BOD.2v7.bootloader.bod_bits=10
+8.menu.BOD.4v0=BOD 4.0V
+8.menu.BOD.4v0.bootloader.bod_bits=00
+8.menu.BOD.disabled=BOD disabled
+8.menu.BOD.disabled.bootloader.bod_bits=11
+
+8.compiler.c.extra_flags=-Wextra -flto -g
+8.compiler.c.elf.extra_flags=-w -flto -g
+8.compiler.cpp.extra_flags=-Wextra -flto -g
+8.ltoarcmd=avr-gcc-ar
+
+
+
+
+
